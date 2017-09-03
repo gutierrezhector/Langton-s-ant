@@ -84,7 +84,7 @@ void Ant::Move()
 		break;
 	case e_dir::LEFT:
 		if (xCurrent == 0)
-			yCurrent = coreInstance->terrainWidth - 1;
+			xCurrent = coreInstance->terrainWidth - 1;
 		else
 			xCurrent -= 1;
 		break;

@@ -2,6 +2,7 @@
 #include <SDL.h>
 #include <iostream>
 #include <ctime>
+#include <mutex>
 
 #include "Struct.h"
 #include "Core.h"
@@ -13,15 +14,17 @@ private:
 	SDL_Window * mainWindow;
 	SDL_Renderer * renderer;
 	Core * coreInstance;
-	time_t saveTime;
+	std::mutex mtx;
 public:
 	GraphicEngine(Core *);
 	~GraphicEngine();
 
 	float offsettime;
 	bool isRunning;
+	bool isPaused;
 
+	void RefreshWindow();
 	int Init();
-	bool Update();
+	void Update();
 };
 

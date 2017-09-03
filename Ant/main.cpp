@@ -1,48 +1,26 @@
 #include <ctime>
 #include <iostream>
-#include <istream>
 
 #include "GraphicEngine.h"
 #include "Core.h"
+#include "ConsoleParsing.h"
 
-void InitAnt(Core* core)
-{
-	core->winwowWidth = 900;
-	core->winwowHeigth = 900;
-	core->caseTerrainWidth = 10;
-	core->caseTerrainHeigth = 10;
-	core->terrainWidth = 10;
-	core->terrainHeigth = 10;
-	core->zoom = 1;
-}
 
 int main(int argc, char **argv)
 {
 	Core core;
-	GraphicEngine* graph = new GraphicEngine(&core);
-	InitAnt(&core);
-
-	time_t start = time(0);
-	start += 5;
-
-	graph->Init();
+	GraphicEngine graph(&core);
+	ConsoleParsing consolePars(&core, &graph);
+	
 	core.Init();
+	graph.Init();
 
-	std::thread first(&GraphicEngine::Update, graph);
+	std::thread graphThread(&GraphicEngine::Update, &graph);
+	std::thread coreThread(&Core::Update, &core);
 
-	int answer;
-	//std::cin >> answer;
-	clock_t begin_time = clock();
-	int flag = 0;
-	while (42)
-	{
-		flag++;
-		if (flag == 100)
-		{
-			core.Update();
-			flag = 0;
-		}
-	}
+	consolePars.Update();
+	graphThread.join();
+	coreThread.join();
 	return EXIT_SUCCESS;
 }
 
