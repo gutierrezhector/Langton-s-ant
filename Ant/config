@@ -1,0 +1,28 @@
+#ant 50 50
+#ant 100 100
+#ant 250 250
+#ant 499 499
+
+//speed
+#s 100
+// winwow width
+
+#ww 1000
+//winwow heigth
+
+#wh 1000
+//case terrain width
+
+#ctw 10
+//case terrain heigth
+
+#cth 10
+//terrain width
+
+#tw 500
+//terrain heigth
+
+#th 500
+
+//zoom
+#z 0.1

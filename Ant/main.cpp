@@ -12,7 +12,8 @@ int main(int argc, char **argv)
 	GraphicEngine graph(&core);
 	ConsoleParsing consolePars(&core, &graph);
 	
-	core.Init();
+	if (!core.Init())
+		return EXIT_FAILURE;
 	graph.Init();
 
 	std::thread graphThread(&GraphicEngine::Update, &graph);
@@ -23,14 +24,3 @@ int main(int argc, char **argv)
 	coreThread.join();
 	return EXIT_SUCCESS;
 }
-
-/*
-while (42)
-{
-if (begin_time < clock())
-{
-core.Update();
-begin_time = clock();
-}
-}
-*/

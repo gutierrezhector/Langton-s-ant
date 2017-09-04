@@ -100,7 +100,7 @@ void ConsoleParsing::Update()
 		if (args[0].compare("help") == 0 ||
 			args[0].compare("h") == 0)
 		{
-			std::cout << "Command: " << std::endl;
+			std::cout << "Command:\n\n\tpause/p: pause the process if it is running and unpause it if it is not\n\n\tadd/a <y> <x>: add an ant at the gave position\n\n\tspeed/s <number>: multiply the speed of the process.\n\n\tzoom/z <number>: modify the zoom in the graphic interface\n\n\tquit/exit/e/q: exit the program\n" << std::endl;
 		}
 	}
 }

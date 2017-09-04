@@ -4,6 +4,10 @@
 #include <list>
 #include <thread>
 #include <chrono>
+#include <istream>
+#include <string>
+#include <fstream>
+#include <vector>
 
 #include "Struct.h"
 #include "Ant.h"
@@ -35,13 +39,10 @@ public:
 
 	Core();
 	~Core();
-	void Init();
+	bool Init();
 	void Update();
+	bool ConfigFile();
 	bool AddAnt(int, int);
-	bool ChangeTerrainWidth();
-	bool ChangeTerrainHeigth();
-	bool ChangeZoom();
-	bool ChangeSpeed();
 	void PrintArray();
 };
 
