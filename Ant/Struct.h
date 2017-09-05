@@ -17,6 +17,8 @@ struct Case
 	Color color;
 	e_state state;
 	bool justChanged;
+	int y;
+	int x;
 
 	std::string ToString()
 	{

@@ -31,6 +31,7 @@ public:
 	long speed;
 	long speedDefault;
 	Case** arrayGame;
+	std::list<Case*> justChangedCase;
 	Color colorStateDefault;
 	std::list<Ant*> antPlayers;
 	bool isRunning;

@@ -1,8 +1,5 @@
-#include <ctime>
-#include <iostream>
-
-#include "GraphicEngine.h"
 #include "Core.h"
+#include "GraphicEngine.h"
 #include "ConsoleParsing.h"
 
 
@@ -14,7 +11,8 @@ int main(int argc, char **argv)
 	
 	if (!core.Init())
 		return EXIT_FAILURE;
-	graph.Init();
+	if (!graph.Init())
+		return EXIT_FAILURE;
 
 	std::thread graphThread(&GraphicEngine::Update, &graph);
 	std::thread coreThread(&Core::Update, &core);

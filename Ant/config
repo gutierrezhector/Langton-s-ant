@@ -1,6 +1,14 @@
-#ant 50 50
+#ant 0 0
+#ant 10 50
+#ant 20 20
+#ant 40 40
+#ant 60 60
+#ant 80 80
 #ant 100 100
-#ant 250 250
+#ant 120 120
+#ant 140 140
+#ant 160 160
+#ant 180 180
 #ant 499 499
 
 //speed
@@ -13,10 +21,10 @@
 #wh 1000
 //case terrain width
 
-#ctw 10
+#ctw 1
 //case terrain heigth
 
-#cth 10
+#cth 1
 //terrain width
 
 #tw 500
@@ -25,4 +33,4 @@
 #th 500
 
 //zoom
-#z 0.1
+#z 1

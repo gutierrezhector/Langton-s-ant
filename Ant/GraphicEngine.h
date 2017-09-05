@@ -22,9 +22,10 @@ public:
 	float offsettime;
 	bool isRunning;
 	bool isPaused;
+	bool justRefreshed;
 
 	void RefreshWindow();
-	int Init();
+	bool Init();
 	void Update();
 };
 
