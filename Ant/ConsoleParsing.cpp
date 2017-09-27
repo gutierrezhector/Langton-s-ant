@@ -16,7 +16,6 @@ ConsoleParsing::~ConsoleParsing()
 std::vector<std::string> ConsoleParsing::ParsArg(std::string argLine)
 {
 	char delimiter = ' ';
-	std::stringstream ss(argLine);
 	std::string item;
 	std::vector<std::string> args;
 	std::string::size_type stTemp = argLine.find(delimiter);
@@ -55,6 +54,17 @@ void ConsoleParsing::Update()
 				std::cout << "Pause" << std::endl;
 				instanceCore->isPaused = true;
 			}
+		}
+
+		if (args[0].compare("step") == 0 ||
+			args[0].compare("sp") == 0)
+		{
+			if (args.size() > 1)
+			{
+				instanceCore->GoToStep(std::stoi(args[0]));
+			}
+			else
+				std::cout << "Current step: " << instanceCore->currentStep << std::endl;
 		}
 
 		if (args[0].compare("add") == 0 ||

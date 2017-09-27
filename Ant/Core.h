@@ -18,29 +18,32 @@ private:
 	int offsetAnt;
 
 	Ant * CreateAnt(int, int);
+	void DoOneStep();
+	void ResetArrayGame();
 
 public:
 
-	int winwowWidth;
-	int winwowHeigth;
+	int windowWidth;
+	int windowHeight;
 	int caseTerrainWidth;
-	int caseTerrainHeigth;
+	int caseTerrainHeight;
 	int terrainWidth;
-	int terrainHeigth;
+	int terrainHeight;
 	float zoom;
 	long speed;
 	long speedDefault;
 	Case** arrayGame;
-	std::list<Case*> justChangedCase;
 	Color colorStateDefault;
 	std::list<Ant*> antPlayers;
 	bool isRunning;
 	bool isPaused;
 	int clockFlag;
+	int currentStep;
 
 	Core();
 	~Core();
 	bool Init();
+	void GoToStep(int);
 	void Update();
 	bool ConfigFile();
 	bool AddAnt(int, int);

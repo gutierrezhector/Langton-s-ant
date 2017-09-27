@@ -1,6 +1,8 @@
 #pragma once
 #include <SDL.h>
+#include <SDL_ttf.h>
 #include <iostream>
+#include <istream>
 #include <ctime>
 #include <mutex>
 
@@ -14,7 +16,14 @@ private:
 	SDL_Window * mainWindow;
 	SDL_Renderer * renderer;
 	Core * coreInstance;
+	TTF_Font *font;
+	SDL_Color colorFont;
+	SDL_Surface * surfaceText;
+	SDL_Texture* text;
 	std::mutex mtx;
+
+	void DrawWindow();
+	void DrawCustomText();
 public:
 	GraphicEngine(Core *);
 	~GraphicEngine();
@@ -25,6 +34,7 @@ public:
 	bool justRefreshed;
 
 	void RefreshWindow();
+	void DrawOneTime();
 	bool Init();
 	void Update();
 };

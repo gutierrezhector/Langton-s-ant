@@ -1,17 +1,17 @@
 #include "Core.h"
 
 const static Color arrayColorAnt[] = {
-	{ (char)255, (char)0, (char)0, (char)1 },
-	{ (char)0, (char)0, (char)255, (char)1 },
-	{ (char)255, (char)255, (char)0, (char)1 },
-	{ (char)0, (char)255, (char)0, (char)1 }
+	{ (char)255, (char)0, (char)0, (char)255 },
+	{ (char)0, (char)0, (char)255, (char)255 },
+	{ (char)255, (char)255, (char)0, (char)255 },
+	{ (char)0, (char)255, (char)0, (char)255 }
 };
 
 const static Color arrayColorState[] = {
-	{ (char)0, (char)0, (char)255, (char)1 },
-	{ (char)255, (char)0, (char)0, (char)1 },
-	{ (char)0, (char)255, (char)0, (char)1 },
-	{ (char)255, (char)255, (char)0, (char)1 }
+	{ (char)0, (char)0, (char)255, (char)255 },
+	{ (char)255, (char)0, (char)0, (char)255 },
+	{ (char)0, (char)255, (char)0, (char)255 },
+	{ (char)255, (char)255, (char)0, (char)255 }
 };
 
 Core::Core()
@@ -27,9 +27,22 @@ Core::Core()
 
 Core::~Core()
 {
-	for (int y = 0; y < terrainHeigth; y++)
+	for (int y = 0; y < terrainHeight; y++)
 		delete arrayGame[y];
 	delete arrayGame;
+}
+
+void Core::ResetArrayGame()
+{
+	for (int y = 0; y < terrainHeight; y++)
+	{
+		for (int x = 0; x < terrainWidth; x++)
+		{
+			arrayGame[y][x].color = { 0, 0, 0, 1 };
+			arrayGame[y][x].state = e_state::STATE0;
+			arrayGame[y][x].justChanged = false;
+		}
+	}
 }
 
 bool Core::ConfigFile()
@@ -70,12 +83,12 @@ bool Core::ConfigFile()
 				if (args[0].compare("#ww") == 0)
 				{
 					std::cout << "Window width to " << args[1] << std::endl;
-					winwowWidth = std::stoi(args[1]);
+					windowWidth = std::stoi(args[1]);
 				}
 				if (args[0].compare("#wh") == 0)
 				{
 					std::cout << "Window heigth to " << args[1] << std::endl;
-					winwowHeigth = std::stoi(args[1]);
+					windowHeight = std::stoi(args[1]);
 				}
 				if (args[0].compare("#ctw") == 0)
 				{
@@ -85,7 +98,7 @@ bool Core::ConfigFile()
 				if (args[0].compare("#cth") == 0)
 				{
 					std::cout << "Case terrain heigth to " << args[1] << std::endl;
-					caseTerrainHeigth = std::stoi(args[1]);
+					caseTerrainHeight = std::stoi(args[1]);
 				}
 				if (args[0].compare("#tw") == 0)
 				{
@@ -95,7 +108,7 @@ bool Core::ConfigFile()
 				if (args[0].compare("#th") == 0)
 				{
 					std::cout << "Terrain heigth to " << args[1] << std::endl;
-					terrainHeigth = std::stoi(args[1]);
+					terrainHeight = std::stoi(args[1]);
 				}
 				if (args[0].compare("#z") == 0)
 				{
@@ -119,8 +132,8 @@ bool Core::Init()
 {
 	if (!ConfigFile())
 		return false;
-	arrayGame = new Case*[terrainHeigth];
-	for (int y = 0; y < terrainHeigth; y++)
+	arrayGame = new Case*[terrainHeight];
+	for (int y = 0; y < terrainHeight; y++)
 	{
 		arrayGame[y] = new Case[terrainWidth];
 		for (int x = 0; x < terrainWidth; x++)
@@ -135,6 +148,33 @@ bool Core::Init()
 	return true;;
 }
 
+void Core::DoOneStep()
+{
+	std::list<Ant*>::const_iterator iterator;
+	for (iterator = antPlayers.begin(); iterator != antPlayers.end(); ++iterator)
+	{
+		if (arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent].state == e_state::STATE0) // case noir etat 0
+		{
+			arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent].state = e_state::STATE1;
+			arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent].color = (*iterator)->colorState;
+			arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent].justChanged = true;
+			(*iterator)->TurnLeft();
+			arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent].justChanged = true;
+			arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent].color = (*iterator)->colorAnt;
+		}
+		else // case blanche etat 1
+		{
+			arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent].state = e_state::STATE0;
+			arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent].color = colorStateDefault;
+			arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent].justChanged = true;
+			(*iterator)->TurnRight();
+			arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent].justChanged = true;
+			arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent].color = (*iterator)->colorAnt;
+		}
+	}
+	currentStep++;
+}
+
 void Core::Update()
 {
 	auto start = std::chrono::high_resolution_clock::now() - std::chrono::nanoseconds((speedDefault / (speed * speed)));
@@ -145,34 +185,30 @@ void Core::Update()
 			auto tick = std::chrono::high_resolution_clock::now();
 			if (std::chrono::duration_cast<std::chrono::nanoseconds>(tick - start).count() >= (speedDefault / (speed * speed)))
 			{
-				std::list<Ant*>::const_iterator iterator;
-				for (iterator = antPlayers.begin(); iterator != antPlayers.end(); ++iterator)
-				{
-					if (arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent].state == e_state::STATE0) // case noir etat 0
-					{
-						arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent].state = e_state::STATE1;
-						arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent].color = (*iterator)->colorState;
-						arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent].justChanged = true;
-						justChangedCase.push_back(&arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent]);
-						(*iterator)->TurnLeft();
-						arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent].justChanged = true;
-						arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent].color = (*iterator)->colorAnt;
-						justChangedCase.push_back(&arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent]);
-					}
-					else // case blanche etat 1
-					{
-						arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent].state = e_state::STATE0;
-						arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent].color = colorStateDefault;
-						arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent].justChanged = true;
-						justChangedCase.push_back(&arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent]);
-						(*iterator)->TurnRight();
-						arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent].justChanged = true;
-						arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent].color = (*iterator)->colorAnt;
-						justChangedCase.push_back(&arrayGame[(*iterator)->yCurrent][(*iterator)->xCurrent]);
-					}
-				}
+				DoOneStep();
 				start = std::chrono::high_resolution_clock::now();
 			}
+		}
+	}
+}
+
+void Core::GoToStep(int step)
+{
+	if (step == currentStep)
+		return;
+	if (step < currentStep)
+	{
+		for (int count = 0; count < currentStep - step; count++)
+		{
+			DoOneStep();
+		}
+	}
+	else
+	{
+		ResetArrayGame();
+		for (int count = 0; count < step; count++)
+		{
+			DoOneStep();
 		}
 	}
 }
@@ -192,7 +228,7 @@ Ant * Core::CreateAnt(int y, int x)
 
 void Core::PrintArray()
 {
-	for (int y = 0; y < caseTerrainHeigth; y++)
+	for (int y = 0; y < caseTerrainHeight; y++)
 	{
 		for (int x = 0; x < caseTerrainWidth; x++)
 		{

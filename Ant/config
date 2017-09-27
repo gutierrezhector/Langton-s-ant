@@ -12,7 +12,7 @@
 #ant 499 499
 
 //speed
-#s 100
+#s 1
 // winwow width
 
 #ww 1000
@@ -21,10 +21,10 @@
 #wh 1000
 //case terrain width
 
-#ctw 1
+#ctw 10
 //case terrain heigth
 
-#cth 1
+#cth 10
 //terrain width
 
 #tw 500
@@ -33,4 +33,4 @@
 #th 500
 
 //zoom
-#z 1
+#z 0.2

@@ -65,7 +65,7 @@ void Ant::Move()
 	switch (dir)
 	{
 	case e_dir::TOP:
-		if (yCurrent == coreInstance->terrainHeigth - 1)
+		if (yCurrent == coreInstance->terrainHeight - 1)
 			yCurrent = 0;
 		else
 			yCurrent += 1;
@@ -78,7 +78,7 @@ void Ant::Move()
 		break;
 	case e_dir::BOT:
 		if (yCurrent == 0)
-			yCurrent = coreInstance->terrainHeigth - 1;
+			yCurrent = coreInstance->terrainHeight - 1;
 		else
 			yCurrent -= 1;
 		break;
