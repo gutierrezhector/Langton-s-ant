@@ -59,12 +59,13 @@ void ConsoleParsing::Update()
 		if (args[0].compare("step") == 0 ||
 			args[0].compare("sp") == 0)
 		{
-			if (args.size() > 1)
-			{
-				instanceCore->GoToStep(std::stoi(args[0]));
-			}
-			else
+			if (args.size() == 1)
 				std::cout << "Current step: " << instanceCore->currentStep << std::endl;
+			else
+				if (VerifgoToStep(args))
+			{
+				GoToStep(std::stoi(args[1]));
+			}			
 		}
 
 		if (args[0].compare("add") == 0 ||
@@ -186,4 +187,43 @@ bool ConsoleParsing::VerifZoom(std::vector<std::string> args)
 		return false;
 	}
 	return true;
+}
+
+bool ConsoleParsing::VerifgoToStep(std::vector<std::string> args)
+{
+	if (args.size() < 2)
+	{
+		std::cout << "Usage: step/sp <number>" << std::endl;
+		return false;
+	}
+	std::string::const_iterator it = args[1].begin();
+	for (std::string::const_iterator it = args[1].begin(); it != args[1].end(); ++it)
+		if (std::isdigit(*it) == 0 && *it != '.')
+		{
+			std::cout << "Enter a correct number" << std::endl;
+			return false;
+		}
+	return true;
+}
+
+void ConsoleParsing::GoToStep(int step)
+{
+	if (step == instanceCore->currentStep)
+		return;
+	if (step > instanceCore->currentStep)
+	{
+		for (int count = 0; count < step - instanceCore->currentStep; count++)
+		{
+			instanceCore->DoOneStep();
+		}
+	}
+	else
+	{
+		instanceCore->ResetArrayGame();
+		instanceGraphicEngine->RefreshWindow();
+		for (int count = 0; count < step; count++)
+		{
+			instanceCore->DoOneStep();
+		}
+	}
 }

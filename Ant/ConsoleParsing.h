@@ -18,6 +18,7 @@ private:
 	bool VerifAdd(std::vector<std::string>);
 	bool VerifSpeed(std::vector<std::string>);
 	bool VerifZoom(std::vector<std::string>);
+	bool VerifgoToStep(std::vector<std::string>);
 
 public:
 	bool isRunning;
@@ -27,5 +28,6 @@ public:
 
 	std::vector<std::string> ParsArg(std::string);
 	void Update();
+	void GoToStep(int);
 };
 

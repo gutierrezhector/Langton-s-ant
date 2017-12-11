@@ -18,8 +18,6 @@ private:
 	int offsetAnt;
 
 	Ant * CreateAnt(int, int);
-	void DoOneStep();
-	void ResetArrayGame();
 
 public:
 
@@ -43,10 +41,11 @@ public:
 	Core();
 	~Core();
 	bool Init();
-	void GoToStep(int);
 	void Update();
 	bool ConfigFile();
 	bool AddAnt(int, int);
 	void PrintArray();
+	void DoOneStep();
+	void ResetArrayGame();
 };
 

@@ -1,15 +1,15 @@
-#ant 0 0
-#ant 10 50
-#ant 20 20
-#ant 40 40
-#ant 60 60
-#ant 80 80
-#ant 100 100
+#antt 0 0
+#antt 10 50
+#antt 20 20
+#antt 40 40
+#antt 60 60
+#antt 80 80
+#antt 100 100
 #ant 120 120
-#ant 140 140
-#ant 160 160
-#ant 180 180
-#ant 499 499
+#antt 140 140
+#antt 160 160
+#antt 180 180
+#antt 499 499
 
 //speed
 #s 1

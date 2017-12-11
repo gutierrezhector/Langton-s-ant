@@ -192,27 +192,6 @@ void Core::Update()
 	}
 }
 
-void Core::GoToStep(int step)
-{
-	if (step == currentStep)
-		return;
-	if (step < currentStep)
-	{
-		for (int count = 0; count < currentStep - step; count++)
-		{
-			DoOneStep();
-		}
-	}
-	else
-	{
-		ResetArrayGame();
-		for (int count = 0; count < step; count++)
-		{
-			DoOneStep();
-		}
-	}
-}
-
 bool Core::AddAnt(int y, int x)
 {
 	antPlayers.push_back(CreateAnt(y, x));
