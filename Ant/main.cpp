@@ -5,7 +5,7 @@
 #include <windows.h>
 #include <string>
 #include <iostream>
-int main(int argc, char **argv)
+int wmain(int argc, char **argv)
 {
 	Core core;
 	GraphicEngine graph(&core);

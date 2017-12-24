@@ -17,8 +17,6 @@ GraphicEngine::GraphicEngine(Core* newCore)
 GraphicEngine::~GraphicEngine()
 {
 	SDL_DestroyWindow(mainWindow);
-	TTF_CloseFont(font);
-	TTF_Quit();
 	SDL_Quit();
 }
 
@@ -55,16 +53,6 @@ bool GraphicEngine::Init()
 		SDL_Quit();
 		return false;
 	}
-	if (TTF_Init() == -1)
-	{
-		std::cout << "Erreur d'initialisation de TTF_Init : " << TTF_GetError() << std::endl;
-		return false;
-	}
-	if ((font = TTF_OpenFont("C:\\Windows\\Fonts\\Arial.ttf", 100)) == NULL)
-	{
-		std::cout << "Erreur de chargement de la police : " << TTF_GetError() << std::endl;
-		return false;
-	}
 	mainWindow = SDL_CreateWindow("Anty", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, coreInstance->windowWidth, coreInstance->windowHeight, SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(mainWindow, -1, 0);
 	SDL_SetRenderDrawColor(renderer, 100, 100, 100, 1);
@@ -84,7 +72,6 @@ bool GraphicEngine::Init()
 
 void GraphicEngine::DrawCustomText()
 {
-	surfaceText = TTF_RenderText_Solid(font, std::to_string(coreInstance->currentStep).c_str(), colorFont);
 	text = SDL_CreateTextureFromSurface(renderer, surfaceText);
 	SDL_Rect textRect; //create a rect
 	textRect.x = 0;  //controls the rect's x coordinate 

@@ -1,6 +1,5 @@
 #pragma once
 #include <SDL.h>
-#include <SDL_ttf.h>
 #include <iostream>
 #include <istream>
 #include <ctime>
@@ -16,7 +15,6 @@ private:
 	SDL_Window * mainWindow;
 	SDL_Renderer * renderer;
 	Core * coreInstance;
-	TTF_Font *font;
 	SDL_Color colorFont;
 	SDL_Surface * surfaceText;
 	SDL_Texture* text;
