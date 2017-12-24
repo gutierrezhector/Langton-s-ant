@@ -210,6 +210,7 @@ void ConsoleParsing::GoToStep(int step)
 {
 	if (step == instanceCore->currentStep)
 		return;
+	instanceCore->isPaused = true;
 	if (step > instanceCore->currentStep)
 	{
 		for (int count = 0; count < step - instanceCore->currentStep; count++)
@@ -221,9 +222,16 @@ void ConsoleParsing::GoToStep(int step)
 	{
 		instanceCore->ResetArrayGame();
 		instanceGraphicEngine->RefreshWindow();
+		for each (Ant* item in instanceCore->antPlayers)
+		{
+			item->xCurrent = item->xStart;
+			item->yCurrent = item->yStart;
+		}
+		instanceCore->currentStep = 0;
 		for (int count = 0; count < step; count++)
 		{
 			instanceCore->DoOneStep();
 		}
 	}
+	instanceCore->isPaused = false;
 }
